@@ -6,27 +6,27 @@ import { gsap } from "gsap";
 
 const SHOWCASE_ITEMS = [
   {
-    src: "/images/tongshifu/craft-sculpting.jpg",
+    src: "/tongshifu/images/tongshifu/craft-sculpting.jpg",
     title: "CLAY SCULPTING",
     desc: "Where form meets spirit",
   },
   {
-    src: "/images/tongshifu/craft-casting.jpg",
+    src: "/tongshifu/images/tongshifu/craft-casting.jpg",
     title: "LOST-WAX CASTING",
     desc: "Fire transforms wax to bronze",
   },
   {
-    src: "/images/tongshifu/craft-polishing.jpg",
+    src: "/tongshifu/images/tongshifu/craft-polishing.jpg",
     title: "HAND POLISHING",
     desc: "Perfection in every surface",
   },
   {
-    src: "/images/tongshifu/craft-painting.jpg",
+    src: "/tongshifu/images/tongshifu/craft-painting.jpg",
     title: "MINERAL PAINTING",
     desc: "Color breathes life into metal",
   },
   {
-    src: "/images/tongshifu/hero-bg.jpg",
+    src: "/tongshifu/images/tongshifu/hero-bg.jpg",
     title: "THE WORKSHOP",
     desc: "Where heritage comes alive",
   },

@@ -35,7 +35,7 @@ const CARDS = [
     description:
       "Beginning with clay, master artisans channel decades of expertise to capture the spirit and grandeur of mythical figures — every stroke a tribute to tradition.",
     tagline: "CLAY SCULPTING & MODELING\nTHE FOUNDATION OF BRONZE ART",
-    background: "/images/tongshifu/craft-sculpting.jpg",
+    background: "/tongshifu/images/tongshifu/craft-sculpting.jpg",
   },
   {
     id: "02",
@@ -44,7 +44,7 @@ const CARDS = [
     description:
       "Following the ancient lost-wax method through dozens of steps — molding, shell-building, firing, and pouring — wax transforms into bronze, forged eternal by fire and metal.",
     tagline: "LOST-WAX CASTING PROCESS\nANCIENT TECHNIQUE, TIMELESS CRAFT",
-    background: "/images/tongshifu/craft-casting.jpg",
+    background: "/tongshifu/images/tongshifu/craft-casting.jpg",
   },
   {
     id: "03",
@@ -53,7 +53,7 @@ const CARDS = [
     description:
       "After casting, artisans hand-finish every detail — removing burrs, smoothing seams, refining textures — until the surface gleams like a mirror, warm to the touch.",
     tagline: "HAND FINISHING & POLISHING\nPERFECTION IN EVERY DETAIL",
-    background: "/images/tongshifu/craft-polishing.jpg",
+    background: "/tongshifu/images/tongshifu/craft-polishing.jpg",
   },
   {
     id: "04",
@@ -62,7 +62,7 @@ const CARDS = [
     description:
       "Mineral pigments and specialized techniques breathe life into bronze — layer upon layer of color transforms cold metal into warm, magnificent art.",
     tagline: "MINERAL PIGMENT PAINTING\nBRINGING BRONZE TO LIFE",
-    background: "/images/tongshifu/craft-painting.jpg",
+    background: "/tongshifu/images/tongshifu/craft-painting.jpg",
   },
 ];
 

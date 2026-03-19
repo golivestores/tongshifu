@@ -3,42 +3,42 @@
 /* ===== Font Faces ===== */
 @font-face {
   font-family: 'Druk';
-  src: url('/drinksome/fonts/Druk-Heavy.woff2') format('woff2');
+  src: url('/tongshifu/fonts/Druk-Heavy.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Druk Wide';
-  src: url('/drinksome/fonts/DrukWide-Heavy.woff2') format('woff2');
+  src: url('/tongshifu/fonts/DrukWide-Heavy.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'ABC Diatype';
-  src: url('/drinksome/fonts/ABCDiatype-Regular.woff2') format('woff2');
+  src: url('/tongshifu/fonts/ABCDiatype-Regular.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'ABC Diatype';
-  src: url('/drinksome/fonts/ABCDiatype-Medium.woff2') format('woff2');
+  src: url('/tongshifu/fonts/ABCDiatype-Medium.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'ABC Diatype Mono';
-  src: url('/drinksome/fonts/ABCDiatypeMono-Regular.woff2') format('woff2');
+  src: url('/tongshifu/fonts/ABCDiatypeMono-Regular.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'NB Architek Pro';
-  src: url('/drinksome/fonts/NBArchitekPro-Regular.ttf') format('truetype');
+  src: url('/tongshifu/fonts/NBArchitekPro-Regular.ttf') format('truetype');
   font-weight: 400;
   font-display: swap;
 }

@@ -305,24 +305,24 @@ export function Origin({ id }: { id: string }) {
             <div className="flex">
               <div className="relative flex-1 overflow-hidden rounded-lg aspect-[2/3] md:aspect-[981/551]">
                 <img
-                  src="/images/tongshifu/craft-sculpting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-sculpting.jpg"
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover md:hidden"
                 />
                 <img
-                  src="/images/tongshifu/craft-sculpting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-sculpting.jpg"
                   alt=""
                   className="absolute inset-0 hidden h-full w-full object-cover md:block"
                 />
               </div>
               <div className="relative flex-1 overflow-hidden rounded-lg aspect-[2/3] md:aspect-[981/551]">
                 <img
-                  src="/images/tongshifu/craft-casting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-casting.jpg"
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover md:hidden"
                 />
                 <img
-                  src="/images/tongshifu/craft-casting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-casting.jpg"
                   alt=""
                   className="absolute inset-0 hidden h-full w-full object-cover md:block"
                 />
@@ -333,7 +333,7 @@ export function Origin({ id }: { id: string }) {
             <div ref={row2Ref} className="flex">
               <div className="relative flex-1 overflow-hidden rounded-lg aspect-[2/3] md:aspect-[481/551]">
                 <img
-                  src="/images/tongshifu/craft-polishing.jpg"
+                  src="/tongshifu/images/tongshifu/craft-polishing.jpg"
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -344,7 +344,7 @@ export function Origin({ id }: { id: string }) {
                   className="relative h-full w-full"
                 >
                   <img
-                    src="/images/tongshifu/hero-bg.jpg"
+                    src="/tongshifu/images/tongshifu/hero-bg.jpg"
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover"
                   />
@@ -352,7 +352,7 @@ export function Origin({ id }: { id: string }) {
               </div>
               <div className="relative flex-1 overflow-hidden rounded-lg aspect-[2/3] md:aspect-[481/551]">
                 <img
-                  src="/images/tongshifu/craft-painting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-painting.jpg"
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -363,14 +363,14 @@ export function Origin({ id }: { id: string }) {
             <div className="flex">
               <div className="relative flex-1 overflow-hidden rounded-lg aspect-[2/3] md:aspect-[981/551]">
                 <img
-                  src="/images/tongshifu/craft-sculpting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-sculpting.jpg"
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover object-top"
                 />
               </div>
               <div className="relative flex-1 overflow-hidden rounded-lg aspect-[2/3] md:aspect-[981/551]">
                 <img
-                  src="/images/tongshifu/craft-casting.jpg"
+                  src="/tongshifu/images/tongshifu/craft-casting.jpg"
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover object-top"
                 />

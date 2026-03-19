@@ -95,7 +95,7 @@ export function Hero({ holdAnimation = false }: HeroProps) {
       {/* Background video */}
       <div className="absolute inset-x-0 top-0 -z-10 h-[180vh] overflow-hidden sm:h-[200vh] lg:inset-0 lg:h-full">
         <video
-          src="/images/tongshifu/hero-video.mp4"
+          src="/tongshifu/images/tongshifu/hero-video.mp4"
           autoPlay
           loop
           muted

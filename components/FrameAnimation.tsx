@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 
 const TOTAL_FRAMES = 120;
-const FRAME_PREFIX = "/frames/frame_";
+const FRAME_PREFIX = "/tongshifu/frames/frame_";
 const FRAME_EXT = ".png";
 
 /**

@@ -98,7 +98,7 @@ export default function Home() {
           style={{ marginTop: "-4px", backgroundColor: "#0A0A0A" }}
         >
           <video
-            src="/images/tongshifu/hero-video.mp4"
+            src="/tongshifu/images/tongshifu/hero-video.mp4"
             autoPlay
             loop
             muted

@@ -12,12 +12,12 @@ export function Logo({
   isDark = true,
 }: LogoProps) {
   const src = variant === "black"
-    ? "/branding/tongshifu-logo-black.png"
+    ? "/tongshifu/branding/tongshifu-logo-black.png"
     : variant === "gold"
-    ? "/branding/tongshifu-logo-gold.png"
+    ? "/tongshifu/branding/tongshifu-logo-gold.png"
     : isDark
-    ? "/branding/tongshifu-logo-gold.png"
-    : "/branding/tongshifu-logo-black.png";
+    ? "/tongshifu/branding/tongshifu-logo-gold.png"
+    : "/tongshifu/branding/tongshifu-logo-black.png";
 
   return (
     <div

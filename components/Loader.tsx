@@ -335,7 +335,7 @@ export function Loader({ isModelLoaded, onExitStart, onComplete }: LoaderProps) 
             style={{ opacity: 0 }}
           >
             <img
-              src="/branding/tongshifu-logo-gold.png"
+              src="/tongshifu/branding/tongshifu-logo-gold.png"
               alt="Tongshifu"
               style={{
                 height: w ? 40 : 60,

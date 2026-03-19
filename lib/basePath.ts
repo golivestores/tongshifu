@@ -1,5 +1,5 @@
 /** Public asset base path — matches next.config.ts basePath */
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "/drinksome";
+const BASE_PATH = "/tongshifu";
 
 /** Prefix a public asset path with the basePath */
 export function asset(path: string) {
