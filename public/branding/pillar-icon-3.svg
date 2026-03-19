@@ -1,0 +1,21 @@
+<svg width="54" height="67" viewBox="0 0 53.9 66.7209" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 1629124159">
+<path id="Ellipse 2156" d="M26.9502 0.723633C41.2977 0.723749 53.1757 15.1839 53.1758 33.3604C53.1758 51.5369 41.2977 65.997 26.9502 65.9971C12.6026 65.9971 0.723633 51.5369 0.723633 33.3604C0.723679 15.1838 12.6026 0.723633 26.9502 0.723633Z" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<path id="Vector 22" d="M26.6407 23.4779L21.0139 7.39453M26.6407 23.4779L32.6695 7.39453M26.6407 23.4779L42.7174 15.8383M26.6407 23.4779L45.5308 23.7144M26.6407 23.4779L35.4573 14.132M26.6407 23.4779L18.0575 14.132M26.6407 23.4779H6.41406M26.6407 23.4779L10.1621 15.8383M26.6407 23.4779V45.1376" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<line id="Line 74" x1="26.9557" y1="59.623" x2="26.9557" y2="54.9133" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<line id="Line 75" x1="16.172" y1="55.4741" x2="19.1993" y2="51.8663" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<line id="Line 77" y1="-0.723954" x2="4.70971" y2="-0.723954" transform="matrix(-0.642788 -0.766044 -0.766044 0.642788 37.6172 55.9395)" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<line id="Line 76" x1="10.6008" y1="45.371" x2="15.239" y2="44.5532" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<line id="Line 78" y1="-0.723954" x2="4.70971" y2="-0.723954" transform="matrix(-0.984808 -0.173648 -0.173648 0.984808 43.8828 46.084)" stroke="var(--stroke-0, #FF3A1F)" stroke-width="1.44791"/>
+<g id="Group 1629125538">
+<circle id="Ellipse 2182" cx="18.1858" cy="28.3928" r="0.915777" transform="rotate(180 18.1858 28.3928)" fill="var(--fill-0, #FF3A1F)"/>
+<circle id="Ellipse 2184" cx="21.8577" cy="28.3928" r="0.915777" transform="rotate(180 21.8577 28.3928)" fill="var(--fill-0, #FF3A1F)"/>
+<circle id="Ellipse 2183" cx="14.5295" cy="28.3928" r="0.915777" transform="rotate(180 14.5295 28.3928)" fill="var(--fill-0, #FF3A1F)"/>
+</g>
+<g id="Group 1629125537">
+<circle id="Ellipse 2182_2" cx="34.1545" cy="28.3928" r="0.915777" transform="rotate(180 34.1545 28.3928)" fill="var(--fill-0, #FF3A1F)"/>
+<circle id="Ellipse 2184_2" cx="37.8264" cy="28.3928" r="0.915777" transform="rotate(180 37.8264 28.3928)" fill="var(--fill-0, #FF3A1F)"/>
+<circle id="Ellipse 2183_2" cx="30.4983" cy="28.3928" r="0.915777" transform="rotate(180 30.4983 28.3928)" fill="var(--fill-0, #FF3A1F)"/>
+</g>
+</g>
+</svg>

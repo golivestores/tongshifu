@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ===== Font Faces ===== */
+@font-face {
+  font-family: 'Druk';
+  src: url('/drinksome/fonts/Druk-Heavy.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Druk Wide';
+  src: url('/drinksome/fonts/DrukWide-Heavy.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Diatype';
+  src: url('/drinksome/fonts/ABCDiatype-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Diatype';
+  src: url('/drinksome/fonts/ABCDiatype-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Diatype Mono';
+  src: url('/drinksome/fonts/ABCDiatypeMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NB Architek Pro';
+  src: url('/drinksome/fonts/NBArchitekPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ===== Tailwind Theme ===== */
+@theme {
+  --color-som-orange-accent: #C8956C;
+  --color-som-black: #0A0A0A;
+  --color-som-orange-light: #F5E6D3;
+  --color-som-white: #fff;
+
+  --font-druk: 'Druk', system-ui, sans-serif;
+  --font-druk-wide: 'Druk Wide', system-ui, sans-serif;
+  --font-diatype: 'ABC Diatype', system-ui, sans-serif;
+  --font-diatype-mono: 'ABC Diatype Mono', ui-monospace, monospace;
+  --font-architek: 'NB Architek Pro', system-ui, sans-serif;
+}
+
+/* ===== Unprefixed CSS variables (original site uses --som-* without --color- prefix) ===== */
+:root {
+  --som-orange-accent: #C8956C;
+  --som-black: #0A0A0A;
+  --som-orange-light: #F5E6D3;
+}
+
+/* ===== Base ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background: transparent;
+  color: #F5E6D3;
+  font-family: 'ABC Diatype', system-ui, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+input {
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+}
+
+::selection {
+  background: #C8956C;
+  color: #0A0A0A;
+}
+
+/* ===== Keyframes ===== */
+@keyframes navUnderlineSweep {
+  0% { opacity: 1; transform: translateX(0); }
+  44% { opacity: 1; transform: translateX(104%); }
+  50% { opacity: 0; transform: translateX(104%); }
+  51% { opacity: 0; transform: translateX(-104%); }
+  57% { opacity: 1; transform: translateX(-104%); }
+  100% { opacity: 1; transform: translateX(0); }
+}
