@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Art of Copper | Tongshifu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   CSS VARIABLES & RESET
+   ═══════════════════════════════════════════ */
+:root {
+  --black: #0a0a0a;
+  --black-warm: #0e0c0a;
+  --dark-bronze: #1a1410;
+  --gold-dark: #8b6914;
+  --gold: #b8860b;
+  --gold-mid: #d4a843;
+  --gold-light: #f0d78c;
+  --gold-pale: #f5e6c4;
+  --warm-gray: #b5a99a;
+  --warm-gray-dim: #6b6158;
+  --warm-gray-dark: #3a3530;
+  --text-body: #c4b9ab;
+  --text-dim: #7a7068;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', system-ui, sans-serif;
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dark) var(--black);
+}
+
+body {
+  background: var(--black);
+  color: var(--text-body);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════
+   NOISE OVERLAY
+   ═══════════════════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL FRAME ANIMATION (Monkey King)
+   ═══════════════════════════════════════════ */
+#frameAnimation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(300px, 32vw, 500px);
+  height: clamp(300px, 32vw, 500px);
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+}
+
+#frameAnimation.visible {
+  opacity: 1;
+}
+
+/* When behind Hall 2 — fade, blur, shrink */
+#frameAnimation.behind {
+  opacity: 0.08;
+  filter: blur(6px) saturate(0.3);
+  transform: translate(-50%, -50%) scale(0.85);
+  z-index: 0;
+}
+
+#frameAnimation img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════
+   COMMON ELEMENTS
+   ═══════════════════════════════════════════ */
+.hall {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hall-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.hall-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s var(--ease-out-expo);
+}
+
+.hall-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-mid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.2s var(--ease-out-expo) 0.15s;
+}
+
+.hall-text {
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: 200;
+  line-height: 1.9;
+  color: var(--text-body);
+  max-width: 640px;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 1.2s var(--ease-out-expo) 0.3s;
+}
+
+.hall-text em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-mid);
+}
+
+/* Reveal animation */
+.hall.visible .hall-label,
+.hall.visible .hall-title,
+.hall.visible .hall-text,
+.hall.visible .reveal,
+.hall.visible .detail-list li {
+  opacity: 1;
+  transform: translateY(0) translateX(0);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.2s var(--ease-out-expo);
+}
+
+.reveal-delay-1 { transition-delay: 0.2s; }
+.reveal-delay-2 { transition-delay: 0.4s; }
+.reveal-delay-3 { transition-delay: 0.6s; }
+.reveal-delay-4 { transition-delay: 0.8s; }
+.reveal-delay-5 { transition-delay: 1.0s; }
+
+/* Divider line */
+.hall-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-dark), transparent);
+  margin: 40px 0;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: all 1.4s var(--ease-out-expo) 0.25s;
+}
+
+.hall.visible .hall-divider {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* ═══════════════════════════════════════════
+   HALL 0 — THE THRESHOLD
+   ═══════════════════════════════════════════ */
+#hall-0 {
+  height: 100vh;
+  background: var(--black);
+  flex-direction: column;
+  gap: 24px;
+}
+
+#hall-0 .bg-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#hall-0 .bg-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  filter: saturate(0.3) contrast(1.2);
+}
+
+#hall-0 .vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 30%, var(--black) 80%);
+}
+
+#hall-0 .hero-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  opacity: 0;
+  animation: heroFadeIn 2.5s var(--ease-out-expo) 0.5s forwards;
+  will-change: opacity, transform;
+}
+
+#hall-0 .hero-text.animation-done {
+  animation: none;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hall-0 .hero-title {
+  font-family: 'Cinzel', var(--serif);
+  font-weight: 900;
+  font-size: clamp(42px, 6.5vw, 92px);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  position: relative;
+  user-select: none;
+  color: transparent;
+  min-height: 1.1em;
+}
+
+#hall-0 .hero-title .text-gold {
+  background: linear-gradient(170deg, var(--gold-pale) 0%, var(--gold-light) 25%, var(--gold-mid) 50%, var(--gold) 75%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 12px rgba(184,134,11,0.25));
+  position: relative;
+  z-index: 1;
+}
+
+/* Gold shimmer sweep after wax melts */
+#hall-0 .hero-title .text-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,240,0.12) 45%, rgba(255,255,240,0.2) 50%, rgba(255,255,240,0.12) 55%, transparent 70%);
+  opacity: 0;
+  z-index: 2;
+}
+
+#hall-0.wax-done .hero-title .text-gold::after {
+  animation: metalSweep 1.5s ease forwards;
+}
+
+@keyframes metalSweep {
+  0% { opacity: 1; transform: translateX(-100%); }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+/* Wax overlay — simple strips that melt downward */
+#hall-0 .wax-overlay {
+  position: absolute;
+  inset: -5px;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#hall-0 .wax-strip {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--black);
+}
+
+#hall-0.wax-playing .wax-strip {
+  animation: waxMelt 2s ease-in forwards;
+}
+
+/* Drip blob at bottom of each strip */
+#hall-0 .wax-strip::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 14px;
+  height: 0;
+  background: rgba(30, 25, 15, 0.9);
+  border-radius: 0 0 50% 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+#hall-0.wax-playing .wax-strip::after {
+  animation: waxDrip 1.5s ease-in forwards;
+  animation-delay: inherit;
+}
+
+@keyframes waxMelt {
+  0% { transform: translateY(0); opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translateY(110%); opacity: 0; }
+}
+
+@keyframes waxDrip {
+  0% { height: 0; opacity: 0; }
+  30% { opacity: 0.8; }
+  50% { height: 20px; }
+  100% { height: 30px; opacity: 0; transform: translateX(-50%) translateY(15px); }
+}
+
+/* Subtle warmth glow during melt */
+#hall-0 .melt-glow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(255,120,20,0.12), transparent);
+  filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#hall-0.wax-playing .melt-glow {
+  animation: meltGlow 2.5s ease forwards;
+}
+
+@keyframes meltGlow {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+#hall-0 .hero-sub {
+  position: relative;
+  z-index: 2;
+  font-family: var(--sans);
+  font-size: clamp(11px, 1.2vw, 14px);
+  font-weight: 300;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  margin-top: 32px;
+  opacity: 0;
+  animation: heroFadeIn 2s var(--ease-out-expo) 1.5s forwards;
+  will-change: opacity, transform;
+}
+
+#hall-0 .hero-sub.animation-done {
+  animation: none;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hall-0 .scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: heroFadeIn 2s var(--ease-out-expo) 2.5s forwards;
+}
+
+#hall-0 .scroll-hint span {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+}
+
+#hall-0 .scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold-dark), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 0.8; transform: scaleY(1.2); }
+}
+
+/* ═══════════════════════════════════════════
+   SHARED: THREE-COLUMN LAYOUT (Left | 3D | Right)
+   ═══════════════════════════════════════════ */
+.split-content {
+  display: grid;
+  grid-template-columns: 1fr 20% 1fr;
+  min-height: 100vh;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.split-content .col-left,
+.split-content .col-right {
+  padding: 80px 48px;
+}
+
+.split-content .col-left {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+  overflow: visible;
+}
+
+/* Let titles bleed into center column and fade out softly */
+.split-content .col-left .hall-title {
+  margin-right: -40%;
+  padding-right: 40%;
+  -webkit-mask-image: linear-gradient(to right, white 30%, rgba(255,255,255,0.6) 55%, rgba(255,255,255,0.15) 75%, transparent 90%);
+  mask-image: linear-gradient(to right, white 30%, rgba(255,255,255,0.6) 55%, rgba(255,255,255,0.15) 75%, transparent 90%);
+  position: relative;
+  z-index: 1;
+}
+
+/* Deco numbers also bleed and fade */
+.split-content .col-left .deco-number {
+  margin-right: -30%;
+  padding-right: 30%;
+  -webkit-mask-image: linear-gradient(to right, white 30%, rgba(255,255,255,0.4) 60%, transparent 85%);
+  mask-image: linear-gradient(to right, white 30%, rgba(255,255,255,0.4) 60%, transparent 85%);
+}
+
+.split-content .col-right {
+  text-align: left;
+  position: relative;
+}
+
+.split-content .col-left .hall-divider {
+  margin-left: auto;
+  margin-right: 0;
+  transform-origin: right;
+  background: linear-gradient(270deg, var(--gold-dark), transparent);
+}
+
+.split-content .col-left .hall-title {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.split-content .col-left .hall-text {
+  text-align: right;
+}
+
+.split-content .col-center {
+  /* Reserved space for the fixed-position 3D frame animation */
+  position: relative;
+  min-height: 60vh;
+}
+
+/* Center glow — spotlight under 3D model */
+.center-glow {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 120px;
+  background: radial-gradient(ellipse at center, rgba(184, 134, 11, 0.12), rgba(184, 134, 11, 0.04) 40%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* Decorative arc around center */
+.center-arc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  height: 110%;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 105, 20, 0.08);
+  pointer-events: none;
+}
+
+.center-arc::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  opacity: 0.4;
+}
+
+/* Glass card style for content blocks */
+.glass-card {
+  background: linear-gradient(135deg, rgba(26, 20, 16, 0.6), rgba(26, 20, 16, 0.3));
+  border: 1px solid rgba(139, 105, 20, 0.12);
+  border-radius: 8px;
+  padding: 32px;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.3), transparent);
+}
+
+/* Big decorative number */
+.deco-number {
+  font-family: var(--serif);
+  font-weight: 300;
+  line-height: 0.85;
+  background: linear-gradient(180deg, rgba(184, 134, 11, 0.15), rgba(184, 134, 11, 0.03));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Decorative vertical line accent */
+.vert-accent {
+  position: absolute;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, var(--gold-dark), transparent);
+  opacity: 0.4;
+}
+
+/* ═══════════════════════════════════════════
+   HALL 1 — THE SOUL OF BRONZE
+   ═══════════════════════════════════════════ */
+#hall-1 {
+  background: var(--black-warm);
+  min-height: 100vh;
+}
+
+#hall-1 .texture-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(184, 134, 11, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, rgba(212, 168, 67, 0.04) 0%, transparent 50%);
+  animation: textureShift 12s ease-in-out infinite alternate;
+}
+
+@keyframes textureShift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, 10px) scale(1.05); }
+}
+
+/* Hall 1 — big "5,000" deco number */
+#hall-1 .deco-number {
+  font-size: clamp(100px, 14vw, 200px);
+  margin-bottom: 16px;
+}
+
+/* Hall 1 — right side stat highlight */
+#hall-1 .stat-highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+#hall-1 .stat-highlight .stat-num {
+  font-family: var(--serif);
+  font-size: clamp(48px, 5vw, 72px);
+  font-weight: 300;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+#hall-1 .stat-highlight .stat-unit {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+}
+
+/* ═══════════════════════════════════════════
+   HALL 2 — THE LOST WAX LEGACY
+   ═══════════════════════════════════════════ */
+#hall-2 {
+  background: var(--black);
+  min-height: 300vh;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+#hall-2 .sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#hall-2 .hall-inner {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.timeline-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 60px 0 40px;
+}
+
+/* Timeline progress bar */
+.timeline-progress {
+  width: 200px;
+  height: 1px;
+  background: var(--warm-gray-dark);
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  transition: width 0.1s linear;
+}
+
+.timeline-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: max-content;
+  padding: 0 calc(50vw - 200px);
+  position: relative;
+}
+
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), var(--gold), var(--gold-dark), transparent);
+  transform: translateY(-50%);
+}
+
+.timeline-node {
+  flex-shrink: 0;
+  width: 280px;
+  text-align: center;
+  position: relative;
+  padding: 0 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s var(--ease-out-expo);
+}
+
+.timeline-node.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-node .year {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 300;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.timeline-node .dot {
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin: 20px auto;
+  position: relative;
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.4);
+}
+
+.timeline-node .dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 50%;
+}
+
+.timeline-node .era-text {
+  font-size: 13px;
+  color: var(--warm-gray);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.timeline-hint {
+  text-align: center;
+  padding: 20px 0 40px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  opacity: 0;
+  transition: opacity 1s var(--ease-out-expo) 1s;
+}
+
+.hall.visible .timeline-hint { opacity: 0.6; }
+
+/* ═══════════════════════════════════════════
+   HALL 3 — THE HANDS THAT SHAPE FIRE
+   ═══════════════════════════════════════════ */
+#hall-3 {
+  background: var(--black-warm);
+  min-height: 100vh;
+}
+
+#hall-3 .mouse-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 3;
+}
+
+#hall-3:hover .mouse-glow {
+  opacity: 1;
+}
+
+/* Hall 3 — step cards */
+#hall-3 .step-card {
+  background: linear-gradient(135deg, rgba(26, 20, 16, 0.5), rgba(26, 20, 16, 0.2));
+  border: 1px solid rgba(139, 105, 20, 0.1);
+  border-radius: 8px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s var(--ease-out-expo);
+}
+
+#hall-3 .step-card + .step-card {
+  margin-top: 16px;
+}
+
+#hall-3 .step-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--gold), var(--gold-dark), transparent);
+}
+
+#hall-3.visible .step-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hall-3 .step-card:nth-child(1) { transition-delay: 0.3s; }
+#hall-3 .step-card:nth-child(2) { transition-delay: 0.5s; }
+#hall-3 .step-card:nth-child(3) { transition-delay: 0.7s; }
+
+#hall-3 .step-card .step-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+#hall-3 .step-card .step-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+
+#hall-3 .step-card .step-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--gold-mid);
+}
+
+#hall-3 .step-card .step-desc {
+  font-size: 13px;
+  color: var(--warm-gray);
+  line-height: 1.6;
+  padding-left: 42px;
+}
+
+/* ═══════════════════════════════════════════
+   HALL 4 — BETWEEN PATIENCE AND FIRE
+   ═══════════════════════════════════════════ */
+#hall-4 {
+  background: var(--black);
+  min-height: 400vh;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+#hall-4 .sticky-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#hall-4 .video-scroll-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#hall-4 .video-scroll-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+#hall-4 .temperature-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, var(--black), transparent 30%, transparent 70%, var(--black));
+  mix-blend-mode: normal;
+}
+
+#hall-4 .heat-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, rgba(180, 80, 20, 0.0), transparent);
+  transition: background 0.5s ease;
+}
+
+#hall-4 .text-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+  padding: 0 40px;
+}
+
+#hall-4 .progress-bar {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#hall-4 .progress-track {
+  width: 200px;
+  height: 1px;
+  background: var(--warm-gray-dark);
+  position: relative;
+}
+
+#hall-4 .progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  transition: width 0.1s linear;
+}
+
+#hall-4 .progress-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════
+   HALL 5 — THE MOMENT OF TRUTH
+   ═══════════════════════════════════════════ */
+#hall-5 {
+  background: var(--black);
+  min-height: 100vh;
+}
+
+#hall-5 .cinematic-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#hall-5 .cinematic-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  filter: contrast(1.2) saturate(1.3);
+}
+
+#hall-5 .cinematic-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, var(--black) 0%, transparent 25%, transparent 75%, var(--black) 100%),
+    linear-gradient(to right, var(--black) 0%, transparent 30%, transparent 70%, var(--black) 100%);
+}
+
+#hall-5 .subtitle-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 40px;
+}
+
+#hall-5 .subtitle-text .hall-title {
+  font-size: clamp(32px, 5vw, 80px);
+  margin-bottom: 32px;
+}
+
+#hall-5 .temp-display {
+  font-family: var(--serif);
+  font-size: clamp(64px, 10vw, 140px);
+  font-weight: 300;
+  background: linear-gradient(135deg, #ff6b35, var(--gold), #ff4500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 1.5s var(--ease-out-expo) 0.3s;
+  margin-bottom: 40px;
+}
+
+#hall-5.visible .temp-display {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#hall-5 .ember-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(255, 100, 20, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   HALL 6 — FROM ROUGH TO RADIANT
+   ═══════════════════════════════════════════ */
+#hall-6 {
+  background: var(--black-warm);
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#hall-6 .hall-inner {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.comparison-slider {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 16/9;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: col-resize;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.2s var(--ease-out-expo) 0.4s;
+}
+
+.hall.visible .comparison-slider {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.comparison-slider .side {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--warm-gray);
+}
+
+.comparison-slider .side-before {
+  background: linear-gradient(135deg, #1a1612, #2a2118, #1a1612);
+  z-index: 1;
+}
+
+.comparison-slider .side-before .rough-texture {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(139,105,20,0.03) 2px, rgba(139,105,20,0.03) 4px),
+    radial-gradient(ellipse at 40% 50%, rgba(100,80,40,0.15) 0%, transparent 60%);
+}
+
+.comparison-slider .side-after {
+  background: linear-gradient(135deg, #1a1410, #2d2213, #1a1410);
+  z-index: 0;
+}
+
+.comparison-slider .side-after .polished-texture {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(240,215,140,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 70%, rgba(184,134,11,0.08) 0%, transparent 40%);
+}
+
+.comparison-slider .side-label {
+  position: absolute;
+  bottom: 30px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  z-index: 5;
+}
+
+.side-before .side-label { left: 30px; }
+.side-after .side-label { right: 30px; }
+
+.comparison-slider .slider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold);
+  z-index: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.comparison-slider .slider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: rgba(10, 10, 10, 0.8);
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  box-shadow: 0 0 30px rgba(184, 134, 11, 0.3);
+}
+
+.comparison-slider .slider-handle svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--gold);
+}
+
+.comparison-slider .side-before {
+  clip-path: inset(0 50% 0 0);
+}
+
+.comparison-before-label, .comparison-after-label {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2vw, 28px);
+  color: var(--warm-gray-dim);
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.comparison-before-label { left: 15%; }
+.comparison-after-label { right: 15%; }
+
+/* ═══════════════════════════════════════════
+   HALL 7 — THE NUMBERS BEHIND THE ART
+   ═══════════════════════════════════════════ */
+#hall-7 {
+  background: var(--black);
+  min-height: 100vh;
+}
+
+#hall-7 .hall-inner {
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.stat-item {
+  padding: 40px 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s var(--ease-out-expo);
+}
+
+.hall.visible .stat-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stat-item:nth-child(1) { transition-delay: 0.1s; }
+.stat-item:nth-child(2) { transition-delay: 0.3s; }
+.stat-item:nth-child(3) { transition-delay: 0.5s; }
+.stat-item:nth-child(4) { transition-delay: 0.7s; }
+
+.stat-number {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 300;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.stat-suffix {
+  font-family: var(--serif);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 300;
+}
+
+.stat-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  margin-top: 12px;
+}
+
+.stat-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--gold-dark);
+  margin: 16px auto 0;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════
+   HALL 8 — THE MASTERPIECES
+   ═══════════════════════════════════════════ */
+#hall-8 {
+  background: var(--black-warm);
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#hall-8 .hall-inner {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.gallery-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  cursor: grab;
+  padding: 40px 0 60px;
+}
+
+.gallery-container::-webkit-scrollbar { display: none; }
+.gallery-container:active { cursor: grabbing; }
+
+.gallery-track {
+  display: flex;
+  gap: 32px;
+  padding: 0 calc(50vw - 250px);
+  min-width: max-content;
+}
+
+.gallery-item {
+  flex-shrink: 0;
+  width: 420px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 1s var(--ease-out-expo);
+}
+
+.gallery-item.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.gallery-item .image-frame {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  background: var(--dark-bronze);
+}
+
+.gallery-item .image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
+.gallery-item:hover .image-frame img {
+  transform: scale(1.04);
+}
+
+.gallery-item .image-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.gallery-item .spotlight {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 40px;
+  background: radial-gradient(ellipse at center bottom, rgba(240,215,140,0.1), transparent);
+  pointer-events: none;
+}
+
+.gallery-item .item-info {
+  padding: 24px 0;
+  text-align: left;
+}
+
+.gallery-item .item-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--gold-mid);
+  margin-bottom: 8px;
+}
+
+.gallery-item .item-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--warm-gray);
+  line-height: 1.6;
+}
+
+.gallery-scroll-hint {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  padding-bottom: 40px;
+  opacity: 0;
+  transition: opacity 1s var(--ease-out-expo) 0.8s;
+}
+
+.hall.visible .gallery-scroll-hint { opacity: 0.6; }
+
+/* ═══════════════════════════════════════════
+   HALL 9 — TIMELESS (FINALE)
+   ═══════════════════════════════════════════ */
+#hall-9 {
+  background: var(--black);
+  min-height: 100vh;
+  flex-direction: column;
+  gap: 32px;
+  text-align: center;
+}
+
+#hall-9 .finale-main {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(32px, 5vw, 72px);
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, var(--gold-pale), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 2s var(--ease-out-expo) 0.3s;
+}
+
+#hall-9 .finale-sub {
+  font-size: clamp(13px, 1.4vw, 17px);
+  font-weight: 200;
+  color: var(--warm-gray-dim);
+  letter-spacing: 0.04em;
+  max-width: 500px;
+  line-height: 1.8;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 2s var(--ease-out-expo) 0.8s;
+}
+
+#hall-9 .finale-logo {
+  margin-top: 60px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 2s var(--ease-out-expo) 1.3s;
+}
+
+#hall-9 .finale-logo img {
+  height: 50px;
+  filter: brightness(0.8) sepia(0.3);
+  opacity: 0.6;
+}
+
+#hall-9.visible .finale-main,
+#hall-9.visible .finale-sub,
+#hall-9.visible .finale-logo {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   NEW: HALL — THE WEIGHT OF DETAIL
+   ═══════════════════════════════════════════ */
+#hall-detail {
+  background: var(--black);
+  min-height: 100vh;
+}
+
+/* Hall Detail — giant "600+" visual anchor */
+#hall-detail .deco-number {
+  font-size: clamp(120px, 16vw, 240px);
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+
+#hall-detail .deco-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  margin-bottom: 32px;
+}
+
+/* Detail list — card style */
+#hall-detail .detail-list {
+  list-style: none;
+  margin-top: 0;
+}
+
+#hall-detail .detail-list li {
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(26, 20, 16, 0.5), rgba(26, 20, 16, 0.2));
+  border: 1px solid rgba(139, 105, 20, 0.08);
+  border-left: 2px solid var(--gold-dark);
+  border-radius: 6px;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--warm-gray);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 1s var(--ease-out-expo);
+}
+
+#hall-detail.visible .detail-list li {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#hall-detail .detail-list li:nth-child(1) { transition-delay: 0.2s; }
+#hall-detail .detail-list li:nth-child(2) { transition-delay: 0.4s; }
+#hall-detail .detail-list li:nth-child(3) { transition-delay: 0.6s; }
+#hall-detail .detail-list li:nth-child(4) { transition-delay: 0.8s; }
+
+#hall-detail .detail-list .li-accent {
+  color: var(--gold);
+  font-size: 14px;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--gold-dark);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
+}
+
+/* ═══════════════════════════════════════════
+   NEW: HALL — THE ARTISAN'S OATH
+   ═══════════════════════════════════════════ */
+#hall-oath {
+  background: var(--black-warm);
+  min-height: 100vh;
+}
+
+#hall-oath .oath-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 60px;
+}
+
+#hall-oath .quote-mark {
+  font-family: var(--serif);
+  font-size: 120px;
+  line-height: 0.6;
+  color: var(--gold-dark);
+  opacity: 0.3;
+  user-select: none;
+}
+
+#hall-oath .oath-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(22px, 3vw, 38px);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--gold-pale);
+  max-width: 800px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1.5s var(--ease-out-expo) 0.3s;
+}
+
+#hall-oath.visible .oath-quote {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hall-oath .oath-attribution {
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--warm-gray-dim);
+  opacity: 0;
+  transition: opacity 1.5s var(--ease-out-expo) 0.8s;
+}
+
+#hall-oath.visible .oath-attribution { opacity: 1; }
+
+#hall-oath .oath-values {
+  display: flex;
+  gap: 60px;
+  margin-top: 20px;
+}
+
+#hall-oath .oath-value {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 1s var(--ease-out-expo);
+}
+
+#hall-oath.visible .oath-value {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hall-oath .oath-value:nth-child(1) { transition-delay: 1s; }
+#hall-oath .oath-value:nth-child(2) { transition-delay: 1.2s; }
+#hall-oath .oath-value:nth-child(3) { transition-delay: 1.4s; }
+
+#hall-oath .oath-value .value-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+#hall-oath .oath-value .value-word {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--gold-mid);
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  #frameAnimation { display: none; }
+  .split-content {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .split-content .col-left {
+    text-align: left;
+    align-items: flex-start;
+    padding: 60px 30px 20px;
+  }
+  .split-content .col-left .hall-divider {
+    margin-left: 0;
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--gold-dark), transparent);
+  }
+  .split-content .col-left .hall-title,
+  .split-content .col-left .hall-text { text-align: left; }
+  .split-content .col-left .hall-title {
+    margin-right: 0; padding-right: 0;
+    -webkit-mask-image: none; mask-image: none;
+    white-space: normal;
+  }
+  .split-content .col-left .deco-number {
+    margin-right: 0; padding-right: 0;
+  }
+  .split-content .col-center { display: none; }
+  .split-content .col-right { padding: 20px 30px 60px; }
+  .center-arc { display: none; }
+  .hall-inner { padding: 60px 30px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .gallery-item { width: 320px; }
+  #hall-oath .oath-values { gap: 40px; }
+}
+
+@media (max-width: 768px) {
+  .hall-inner { padding: 60px 24px; }
+  .hall-title { margin-bottom: 24px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat-item { padding: 24px 12px; }
+  .gallery-item { width: 280px; }
+  .gallery-track { gap: 20px; padding: 0 30px; }
+  .timeline-track { padding: 0 30px; }
+  .timeline-node { width: 220px; }
+  #hall-oath .oath-values { flex-direction: column; gap: 30px; }
+  .comparison-slider { aspect-ratio: 4/3; }
+}
+
+@media (max-width: 375px) {
+  .hall-inner { padding: 50px 20px; }
+  .gallery-item { width: 260px; }
+  .stats-grid { gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HALL 0 — THE THRESHOLD
+     ═══════════════════════════════════════════ -->
+<section id="hall-0" class="hall">
+  <div class="bg-video">
+    <video autoplay muted loop playsinline>
+      <source src="craftsmanship.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="vignette"></div>
+  <div class="hero-text">
+    <h1 class="hero-title" id="heroTitle">
+      <div class="text-gold">Forged by Time.</div>
+      <div class="wax-overlay" id="waxOverlay"></div>
+      <div class="melt-glow"></div>
+    </h1>
+  </div>
+  <div class="hero-sub">The Ancient Art of Lost Wax Casting</div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 1 — THE SOUL OF BRONZE
+     ═══════════════════════════════════════════ -->
+<section id="hall-1" class="hall">
+  <div class="texture-bg"></div>
+  <div class="split-content">
+    <div class="col-left">
+      <div class="hall-label">Hall I</div>
+      <div class="deco-number reveal">5,000</div>
+      <h2 class="hall-title">The Soul<br>of Bronze</h2>
+      <div class="hall-divider"></div>
+      <p class="hall-text">
+        Before steel. Before iron.<br>There was <em>bronze</em>.
+      </p>
+    </div>
+    <div class="col-center">
+      <div class="center-arc"></div>
+      <div class="center-glow"></div>
+    </div>
+    <div class="col-right">
+      <div class="stat-highlight reveal reveal-delay-1">
+        <span class="stat-num">5,000</span>
+        <span class="stat-unit">Years of<br>Heritage</span>
+      </div>
+      <div class="glass-card reveal reveal-delay-2">
+        <p class="hall-text" style="opacity:1;transform:none;">
+          From ritual vessels of the Shang Dynasty to the crowning sculptures of the Renaissance — civilizations have entrusted their most sacred stories to this noble metal.
+        </p>
+        <p class="hall-text" style="opacity:1;transform:none;margin-top:16px;">
+          <em>Copper remembers the hands that shape it.</em>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 3 — THE HANDS THAT SHAPE FIRE
+     ═══════════════════════════════════════════ -->
+<section id="hall-3" class="hall">
+  <div class="mouse-glow" id="mouseGlow"></div>
+  <div class="split-content">
+    <div class="col-left">
+      <div class="hall-label">Hall III</div>
+      <h2 class="hall-title">The Hands That<br>Shape Fire</h2>
+      <div class="hall-divider"></div>
+      <div class="glass-card reveal reveal-delay-1">
+        <p class="hall-text" style="opacity:1;transform:none;">
+          Every sculpture begins not with metal, but with <em>touch</em>. Master artisans carve each detail by hand — no two pieces are ever the same.
+        </p>
+      </div>
+    </div>
+    <div class="col-center">
+      <div class="center-arc"></div>
+      <div class="center-glow"></div>
+    </div>
+    <div class="col-right">
+      <div class="step-card">
+        <div class="step-head">
+          <span class="step-num">01</span>
+          <span class="step-name">Wax Sculpting</span>
+        </div>
+        <div class="step-desc">Transforming vision into three-dimensional form, one stroke at a time.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-head">
+          <span class="step-num">02</span>
+          <span class="step-name">Wax Filling</span>
+        </div>
+        <div class="step-desc">Molten wax flows into precision molds, capturing every mechanical detail.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-head">
+          <span class="step-num">03</span>
+          <span class="step-name">Wax Refinement</span>
+        </div>
+        <div class="step-desc">Each model refined by hand — smoothing, adjusting, perfecting.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL — THE WEIGHT OF DETAIL
+     ═══════════════════════════════════════════ -->
+<section id="hall-detail" class="hall">
+  <div class="split-content">
+    <div class="col-left">
+      <div class="hall-label">Hall IV</div>
+      <div class="deco-number reveal">600<span style="font-size:0.5em;vertical-align:super;">+</span></div>
+      <div class="deco-label reveal reveal-delay-1">Individual Components</div>
+      <h2 class="hall-title">The Weight<br>of Detail</h2>
+      <div class="hall-divider"></div>
+      <p class="hall-text">
+        Each sculpted, cast, polished, and painted separately — then assembled into one seamless form.
+      </p>
+    </div>
+    <div class="col-center">
+      <div class="center-arc"></div>
+      <div class="center-glow"></div>
+    </div>
+    <div class="col-right">
+      <ul class="detail-list">
+        <li><span class="li-accent"></span> Every gear, every joint — anatomically precise</li>
+        <li><span class="li-accent"></span> Surface textures replicate real metallic armor</li>
+        <li><span class="li-accent"></span> Tolerances measured in fractions of a millimeter</li>
+        <li><span class="li-accent"></span> Assembly requires 3 master craftsmen working in unison</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Frame Animation Container (fixed position, controlled by JS) -->
+<div id="frameAnimation">
+  <img id="frameImg" src="frames/frame_001.png" alt="Monkey King sculpture rotating">
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HALL 4 — BETWEEN PATIENCE AND FIRE
+     ═══════════════════════════════════════════ -->
+<section id="hall-4" class="hall">
+  <div class="sticky-container">
+    <div class="video-scroll-bg">
+      <video id="scrollVideo" muted playsinline preload="auto">
+        <source src="craftsmanship.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="temperature-overlay"></div>
+    <div class="heat-overlay" id="heatOverlay"></div>
+    <div class="text-overlay">
+      <div class="hall-label" style="text-align:center;">Hall V</div>
+      <h2 class="hall-title" style="text-align:center;">Between Patience<br>&amp; Fire</h2>
+      <p class="hall-text" style="text-align:center; margin: 0 auto;">
+        Layer by layer, the ceramic shell forms. Then fire takes everything away — except <em>the promise of what's to come.</em>
+      </p>
+    </div>
+    <div class="progress-bar">
+      <span class="progress-label">Slurry</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <span class="progress-label">Fire</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 5 — THE MOMENT OF TRUTH
+     ═══════════════════════════════════════════ -->
+<section id="hall-5" class="hall">
+  <div class="ember-glow"></div>
+  <div class="cinematic-bg">
+    <video autoplay muted loop playsinline>
+      <source src="craftsmanship.mp4#t=70,100" type="video/mp4">
+    </video>
+  </div>
+  <div class="cinematic-gradient"></div>
+  <div class="subtitle-text">
+    <div class="hall-label" style="text-align:center;">Hall VI</div>
+    <div class="temp-display">1,200°C</div>
+    <h2 class="hall-title">The Moment<br>of Truth</h2>
+    <p class="hall-text" style="text-align:center; margin: 0 auto;">
+      Liquid bronze fills the void left by wax. When the shell breaks, a sculpture is born — <em>raw, powerful, alive.</em>
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 2 — THE LOST WAX LEGACY
+     ═══════════════════════════════════════════ -->
+<section id="hall-2" class="hall">
+  <div class="sticky-wrapper">
+    <div class="hall-inner">
+      <div class="hall-label">Hall II</div>
+      <h2 class="hall-title">The Lost Wax Legacy</h2>
+      <div class="hall-divider" style="margin: 24px auto 0;"></div>
+      <p class="hall-text" style="text-align: center; margin: 24px auto 0;">
+        The same technique that shaped ancient ritual vessels now gives life to modern masterpieces.<br><em>The tools have evolved. The devotion has not.</em>
+      </p>
+    </div>
+    <div class="timeline-container" id="timelineContainer">
+      <div class="timeline-track" id="timelineTrack">
+        <div class="timeline-node">
+          <div class="year">3000 BC</div>
+          <div class="dot"></div>
+          <div class="era-text">Earliest lost wax artifacts<br>emerge in Mesopotamia</div>
+        </div>
+        <div class="timeline-node">
+          <div class="year">1600 BC</div>
+          <div class="dot"></div>
+          <div class="era-text">Shang Dynasty masters<br>refine bronze ritual vessels</div>
+        </div>
+        <div class="timeline-node">
+          <div class="year">500 BC</div>
+          <div class="dot"></div>
+          <div class="era-text">Greek sculptors perfect<br>hollow bronze casting</div>
+        </div>
+        <div class="timeline-node">
+          <div class="year">1400</div>
+          <div class="dot"></div>
+          <div class="era-text">Renaissance masters<br>create monumental bronzes</div>
+        </div>
+        <div class="timeline-node">
+          <div class="year">1900</div>
+          <div class="dot"></div>
+          <div class="era-text">Industrial age nearly<br>erases the handcraft</div>
+        </div>
+        <div class="timeline-node">
+          <div class="year">Today</div>
+          <div class="dot"></div>
+          <div class="era-text">Tongshifu revives the art<br>with modern mastery</div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-progress">
+      <div class="timeline-progress-fill" id="timelineProgressFill"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL — THE ARTISAN'S OATH
+     ═══════════════════════════════════════════ -->
+<section id="hall-oath" class="hall">
+  <div class="hall-inner">
+    <div class="oath-layout">
+      <div class="hall-label reveal">Hall VII</div>
+      <div class="quote-mark reveal">&ldquo;</div>
+      <p class="oath-quote">
+        We do not manufacture. We <em>devote</em>. Every flaw we correct by hand, every surface we polish to perfection, is a promise — that what you hold is not a product, but a piece of someone's life.
+      </p>
+      <div class="oath-attribution reveal reveal-delay-2">&mdash; Tongshifu Master Artisans</div>
+      <div class="oath-values">
+        <div class="oath-value">
+          <div class="value-icon">&diams;</div>
+          <div class="value-word">Precision</div>
+        </div>
+        <div class="oath-value">
+          <div class="value-icon">&hearts;</div>
+          <div class="value-word">Devotion</div>
+        </div>
+        <div class="oath-value">
+          <div class="value-icon">&infin;</div>
+          <div class="value-word">Legacy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 6 — FROM ROUGH TO RADIANT
+     ═══════════════════════════════════════════ -->
+<section id="hall-6" class="hall">
+  <div class="hall-inner">
+    <div class="hall-label">Hall VIII</div>
+    <h2 class="hall-title">From Rough<br>to Radiant</h2>
+    <div class="hall-divider" style="margin: 24px auto 0;"></div>
+    <p class="hall-text" style="text-align: center; margin: 24px auto 0;">
+      Hundreds of hours of hand-polishing. Every color applied by brush, not machine. <em>This is where metal becomes art.</em>
+    </p>
+  </div>
+  <div class="comparison-slider" id="comparisonSlider">
+    <div class="side side-after">
+      <div class="polished-texture"></div>
+      <div class="comparison-after-label">Radiant</div>
+      <span class="side-label">After &mdash; Hand Painted</span>
+    </div>
+    <div class="side side-before">
+      <div class="rough-texture"></div>
+      <div class="comparison-before-label">Rough</div>
+      <span class="side-label">Before &mdash; Raw Cast</span>
+    </div>
+    <div class="slider-line" id="sliderLine"></div>
+    <div class="slider-handle" id="sliderHandle">
+      <svg viewBox="0 0 24 24"><path d="M8 5l-5 7 5 7M16 5l5 7-5 7"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 7 — THE NUMBERS BEHIND THE ART
+     ═══════════════════════════════════════════ -->
+<section id="hall-7" class="hall">
+  <div class="hall-inner">
+    <div class="hall-label">Hall IX</div>
+    <h2 class="hall-title" style="text-align:center;">The Numbers Behind<br>the Art</h2>
+    <div class="hall-divider" style="margin: 24px auto 0;"></div>
+    <p class="hall-text" style="text-align:center; margin: 24px auto 0;">
+      Art cannot be rushed. Every piece passes through <em>thirty pairs of hands</em>, two hundred hours of devotion, and ten stages of transformation.
+    </p>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="30">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Master Artisans<br>per Piece</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="200">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Hours of<br>Handcrafting</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="10">0</span></div>
+        <div class="stat-label">Meticulous<br>Steps</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="counter" data-target="5000">0</span></div>
+        <div class="stat-label">Years of<br>Heritage</div>
+        <div class="stat-divider"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 8 — THE MASTERPIECES
+     ═══════════════════════════════════════════ -->
+<section id="hall-8" class="hall">
+  <div class="hall-inner">
+    <div class="hall-label">Hall X</div>
+    <h2 class="hall-title" style="text-align:center;">The Masterpieces</h2>
+    <div class="hall-divider" style="margin: 24px auto 0;"></div>
+  </div>
+  <div class="gallery-container" id="galleryContainer">
+    <div class="gallery-track">
+      <div class="gallery-item">
+        <div class="spotlight"></div>
+        <div class="image-frame">
+          <img src="https://prctong.com/wp-content/uploads/2025/06/1D015052D-768b-800x800.png" alt="Optimus Prime" loading="lazy">
+        </div>
+        <div class="item-info">
+          <div class="item-name">Optimus Prime</div>
+          <div class="item-quote">"600 individual components. One unbreakable spirit."</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="spotlight"></div>
+        <div class="image-frame">
+          <img src="https://prctong.com/wp-content/uploads/2025/06/1L1003771.jpg" alt="Joker" loading="lazy">
+        </div>
+        <div class="item-info">
+          <div class="item-name">Joker: Heath Ledger</div>
+          <div class="item-quote">"Chaos, frozen in bronze."</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="spotlight"></div>
+        <div class="image-frame">
+          <img src="https://prctong.com/wp-content/uploads/2025/06/1634378ab80-800x800.jpg" alt="The Peacock" loading="lazy">
+        </div>
+        <div class="item-info">
+          <div class="item-name">The Peacock</div>
+          <div class="item-quote">"Every feather, a universe of detail."</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="spotlight"></div>
+        <div class="image-frame">
+          <img src="https://prctong.com/wp-content/uploads/2025/05/3060696D-c5ae-800x800.png" alt="Heroes of Earth" loading="lazy">
+        </div>
+        <div class="item-info">
+          <div class="item-name">Heroes of Earth</div>
+          <div class="item-quote">"Legend reimagined in solid brass."</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="spotlight"></div>
+        <div class="image-frame">
+          <img src="https://prctong.com/wp-content/uploads/2025/06/1D015055D-1284-800x800.png" alt="Bumblebee" loading="lazy">
+        </div>
+        <div class="item-info">
+          <div class="item-name">Bumblebee</div>
+          <div class="item-quote">"Precision engineered. Soul handcrafted."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gallery-scroll-hint">Drag to explore &rarr;</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HALL 9 — TIMELESS (FINALE)
+     ═══════════════════════════════════════════ -->
+<section id="hall-9" class="hall">
+  <div class="finale-main">Not Manufactured.<br><em>Crafted.</em></div>
+  <div class="finale-sub">Each piece takes 30+ artisans and over 200 hours to complete. What you hold is not a product — it is a testament to human hands and infinite patience.</div>
+  <div class="finale-logo">
+    <img src="铜师傅logo/铜师傅LOGO（金属字）.png" alt="Tongshifu">
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ── Intersection Observer for reveal animations ── */
+  const halls = document.querySelectorAll('.hall');
+  const hallObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  halls.forEach(hall => hallObserver.observe(hall));
+
+  /* ── Mouse glow effect (Hall 3) ── */
+  const glowContainer = document.getElementById('hall-3');
+  const mouseGlow = document.getElementById('mouseGlow');
+
+  if (glowContainer && mouseGlow) {
+    glowContainer.addEventListener('mousemove', (e) => {
+      const rect = glowContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      mouseGlow.style.background = `radial-gradient(400px circle at ${x}px ${y}px, rgba(240, 215, 140, 0.06), transparent 60%)`;
+    });
+  }
+
+  /* ── Hall 3 click-to-play video ── */
+  const hall3Frame = document.getElementById('hall3Video');
+  const hall3PlayBtn = document.getElementById('hall3PlayBtn');
+  if (hall3Frame && hall3PlayBtn) {
+    const hall3Vid = hall3Frame.querySelector('video');
+    hall3Frame.addEventListener('click', () => {
+      if (hall3Vid.paused) {
+        hall3Vid.play();
+        hall3PlayBtn.classList.add('hidden');
+      } else {
+        hall3Vid.pause();
+        hall3PlayBtn.classList.remove('hidden');
+      }
+    });
+  }
+
+  /* ── Hall Detail click-to-play video ── */
+  const hallDetailFrame = document.getElementById('hallDetailVideo');
+  const hallDetailPlayBtn = document.getElementById('hallDetailPlayBtn');
+  if (hallDetailFrame && hallDetailPlayBtn) {
+    const detailVid = hallDetailFrame.querySelector('video');
+    hallDetailFrame.addEventListener('click', () => {
+      if (detailVid.paused) {
+        detailVid.play();
+        hallDetailPlayBtn.classList.add('hidden');
+      } else {
+        detailVid.pause();
+        hallDetailPlayBtn.classList.remove('hidden');
+      }
+    });
+  }
+
+  /* ── Video scroll control (Hall 4) ── */
+  const scrollVideo = document.getElementById('scrollVideo');
+  const hall4 = document.getElementById('hall-4');
+  const progressFill = document.getElementById('progressFill');
+  const heatOverlay = document.getElementById('heatOverlay');
+
+  if (scrollVideo && hall4) {
+    scrollVideo.load();
+
+    window.addEventListener('scroll', () => {
+      // Use offsetTop for reliable position calc instead of getBoundingClientRect
+      const hallTop = hall4.offsetTop;
+      const hallHeight = hall4.offsetHeight;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const viewH = window.innerHeight;
+
+      // Progress: 0 when hall top hits viewport top, 1 when hall bottom reaches viewport bottom
+      const scrolled = scrollY - hallTop;
+      const scrollRange = hallHeight - viewH;
+      const progress = Math.max(0, Math.min(1, scrolled / scrollRange));
+
+      // Only update when section is near viewport
+      if (scrollY + viewH > hallTop && scrollY < hallTop + hallHeight) {
+
+        // Video scrub
+        if (scrollVideo.readyState >= 2) {
+          const startTime = 40;
+          const endTime = 100;
+          scrollVideo.currentTime = startTime + progress * (endTime - startTime);
+        }
+
+        // Progress bar
+        if (progressFill) {
+          progressFill.style.width = (progress * 100) + '%';
+        }
+
+        // Heat overlay: visible fire glow that grows with scroll
+        if (heatOverlay) {
+          const intensity = progress * 0.5;
+          heatOverlay.style.background =
+            'radial-gradient(ellipse at center, ' +
+            'rgba(200,60,10,' + intensity + '), ' +
+            'rgba(255,120,20,' + (intensity * 0.4) + '), ' +
+            'transparent)';
+        }
+
+        if (progress > 0.05) {
+          hall4.classList.add('visible');
+        }
+      }
+    }, { passive: true });
+  }
+
+  /* ── Comparison slider (Hall 6) ── */
+  const slider = document.getElementById('comparisonSlider');
+  if (slider) {
+    const beforeSide = slider.querySelector('.side-before');
+    const sliderLine = document.getElementById('sliderLine');
+    const sliderHandle = document.getElementById('sliderHandle');
+    let isDragging = false;
+
+    function updateSlider(x) {
+      const rect = slider.getBoundingClientRect();
+      let pos = (x - rect.left) / rect.width;
+      pos = Math.max(0.05, Math.min(0.95, pos));
+      const pct = pos * 100;
+
+      beforeSide.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      sliderLine.style.left = pct + '%';
+      sliderHandle.style.left = pct + '%';
+    }
+
+    slider.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
+    slider.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
+    window.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); }, { passive: true });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('touchend', () => { isDragging = false; });
+  }
+
+  /* ── Counter animation (Hall 7) ── */
+  const counters = document.querySelectorAll('.counter');
+  let countersDone = false;
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !countersDone) {
+        countersDone = true;
+        counters.forEach(counter => {
+          const target = parseInt(counter.dataset.target);
+          const duration = 2000;
+          const start = performance.now();
+
+          function tick(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            counter.textContent = Math.round(target * eased).toLocaleString();
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const hall7 = document.getElementById('hall-7');
+  if (hall7) counterObserver.observe(hall7);
+
+  /* ── Drag-to-scroll for timeline & gallery ── */
+  function enableDragScroll(container) {
+    if (!container) return;
+    let isDown = false, startX, scrollLeft;
+
+    container.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+    container.addEventListener('mouseleave', () => { isDown = false; });
+    container.addEventListener('mouseup', () => { isDown = false; });
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      container.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    });
+
+    // Touch support
+    container.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    }, { passive: true });
+    container.addEventListener('touchmove', (e) => {
+      const x = e.touches[0].pageX - container.offsetLeft;
+      container.scrollLeft = scrollLeft - (x - startX);
+    }, { passive: true });
+  }
+
+  // Timeline drag disabled — now scroll-driven
+  // enableDragScroll(document.getElementById('timelineContainer'));
+  enableDragScroll(document.getElementById('galleryContainer'));
+
+  /* ── Scroll frame animation (Monkey King) ── */
+  (function() {
+    const frameAnim = document.getElementById('frameAnimation');
+    const frameImg = document.getElementById('frameImg');
+    if (!frameAnim || !frameImg) return;
+
+    const totalFrames = 120;
+    const framePaths = [];
+    for (let i = 1; i <= totalFrames; i++) {
+      const path = 'frames/frame_' + String(i).padStart(3, '0') + '.png';
+      framePaths.push(path);
+      const img = new Image();
+      img.src = path;
+    }
+
+    const hall1 = document.getElementById('hall-1');
+    const hallDetail = document.getElementById('hall-detail');
+
+    if (!hall1 || !hallDetail) return;
+
+    let lastFrame = -1;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const viewH = window.innerHeight;
+
+      // Animation starts when hall-1 center is in viewport, ends at hall-detail bottom
+      const activeStart = hall1.offsetTop + viewH * 0.5;
+      const activeEnd = hallDetail.offsetTop + hallDetail.offsetHeight;
+
+      if (scrollY + viewH < activeStart || scrollY + viewH > activeEnd) {
+        frameAnim.classList.remove('visible', 'behind');
+        return;
+      }
+
+      frameAnim.classList.add('visible');
+      frameAnim.classList.remove('behind');
+
+      // Frame 0 when scrollY reaches activeStart, frame 119 at hall-detail bottom
+      const totalRange = activeEnd - activeStart - viewH;
+      const scrolled = scrollY - activeStart + viewH * 0.5;
+      const progress = Math.max(0, Math.min(1, scrolled / totalRange));
+
+      const frameIndex = Math.min(totalFrames - 1, Math.floor(progress * totalFrames));
+
+      if (frameIndex !== lastFrame) {
+        frameImg.src = framePaths[frameIndex];
+        lastFrame = frameIndex;
+      }
+    }, { passive: true });
+  })();
+
+  /* ── Scroll-driven timeline (Hall 2) ── */
+  const hall2 = document.getElementById('hall-2');
+  const timelineTrack = document.getElementById('timelineTrack');
+  const timelineProgressFill = document.getElementById('timelineProgressFill');
+  const timelineNodes = document.querySelectorAll('.timeline-node');
+
+  if (hall2 && timelineTrack) {
+    window.addEventListener('scroll', () => {
+      const hallTop = hall2.offsetTop;
+      const hallHeight = hall2.offsetHeight;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const viewH = window.innerHeight;
+      const scrollRange = hallHeight - viewH;
+      const scrolled = scrollY - hallTop;
+      const progress = Math.max(0, Math.min(1, scrolled / scrollRange));
+
+      // Only process when near this section
+      if (scrollY + viewH > hallTop && scrollY < hallTop + hallHeight) {
+        // Move timeline track horizontally
+        const trackWidth = timelineTrack.scrollWidth;
+        const containerWidth = timelineTrack.parentElement.offsetWidth;
+        const maxShift = trackWidth - containerWidth;
+        const shift = progress * maxShift;
+        timelineTrack.style.transform = `translateX(${-shift}px)`;
+
+        // Progress bar
+        if (timelineProgressFill) {
+          timelineProgressFill.style.width = (progress * 100) + '%';
+        }
+
+        // Reveal nodes as they come into "view"
+        timelineNodes.forEach((node, i) => {
+          const nodeProgress = i / (timelineNodes.length - 1);
+          if (progress >= nodeProgress * 0.8) {
+            node.classList.add('visible');
+          }
+        });
+
+        // Mark hall as visible
+        if (progress > 0.02) {
+          hall2.classList.add('visible');
+        }
+      }
+    }, { passive: true });
+  }
+
+  /* ── Gallery item reveal ── */
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  galleryItems.forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.15) + 's';
+    galleryObserver.observe(item);
+  });
+
+  /* ── Smooth parallax on scroll for hero ── */
+  const heroText = document.querySelector('#hall-0 .hero-text');
+  const heroSub = document.querySelector('#hall-0 .hero-sub');
+  const scrollHint = document.querySelector('#hall-0 .scroll-hint');
+
+  /* ── Wax melt effect for hero title (simple strip version) ── */
+  (function() {
+    const hall0 = document.getElementById('hall-0');
+    const waxOverlay = document.getElementById('waxOverlay');
+    if (!hall0 || !waxOverlay) return;
+
+    // Build wax strips
+    const stripCount = 20;
+    const stripWidth = 100 / stripCount;
+    for (let i = 0; i < stripCount; i++) {
+      const strip = document.createElement('div');
+      strip.className = 'wax-strip';
+      strip.style.left = (i * stripWidth) + '%';
+      strip.style.width = (stripWidth + 0.5) + '%';
+      // Center strips melt first, edges last + randomness
+      const centerDist = Math.abs(i - stripCount / 2) / (stripCount / 2);
+      const delay = centerDist * 0.6 + Math.random() * 0.3;
+      strip.style.animationDelay = delay.toFixed(2) + 's';
+      waxOverlay.appendChild(strip);
+    }
+
+    // Trigger after hero fade-in
+    setTimeout(() => {
+      hall0.classList.add('wax-playing');
+    }, 1200);
+
+    // Shimmer sweep after melt completes
+    setTimeout(() => {
+      hall0.classList.add('wax-done');
+    }, 3800);
+  })();
+
+  // After CSS animation ends, switch to JS-controlled opacity/transform
+  if (heroText) {
+    heroText.addEventListener('animationend', () => {
+      heroText.classList.add('animation-done');
+    });
+  }
+  if (heroSub) {
+    heroSub.addEventListener('animationend', () => {
+      heroSub.classList.add('animation-done');
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+
+    if (scrollY < vh) {
+      const opacity = 1 - (scrollY / (vh * 0.6));
+      const translate = scrollY * 0.3;
+
+      if (heroText && heroText.classList.contains('animation-done')) {
+        heroText.style.opacity = Math.max(0, opacity);
+        heroText.style.transform = `translateY(${translate}px)`;
+      }
+      if (heroSub && heroSub.classList.contains('animation-done')) {
+        heroSub.style.opacity = Math.max(0, opacity);
+        heroSub.style.transform = `translateY(${translate * 0.5}px)`;
+      }
+      if (scrollHint) {
+        scrollHint.style.opacity = Math.max(0, opacity * 0.8);
+      }
+    }
+  }, { passive: true });
+
+})();
+</script>
+</body>
+</html>
